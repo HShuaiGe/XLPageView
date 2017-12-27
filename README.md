@@ -1,2 +1,3 @@
 # XLPageView
 对HMSegmentedControl再次封装
+对HMSegmentedControl再次封装,添加了容器功能，非常感谢HMSegmentedControl的作者，作者地址https://github.com/HeshamMegid/HMSegmentedControl

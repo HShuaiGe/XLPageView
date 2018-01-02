@@ -11,6 +11,7 @@
 @interface XLPageView()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
 //@property (nonatomic, strong) HMSegmentedControl *segmentedControl;
 @property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
 @property (nonatomic, strong) UIViewController *parentVC;
 @property (nonatomic, strong) NSArray<UIViewController *> *childVCs;
 @end
@@ -28,8 +29,16 @@
 
 -(void)awakeFromNib{
     [super awakeFromNib];
+    NSLog(@"\nW:%f \nH:%f",self.frame.size.width, self.frame.size.height);
     [self addContentView];
 }
+-(void)layoutSubviews{
+    self.segmentedControl.frame = CGRectMake(0, 0, self.frame.size.width, 40);
+    _flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height - 40);
+    _collectionView.frame = CGRectMake(0, 40, self.frame.size.width, self.frame.size.height - 40);
+}
+
+
 
 -(void)setSegmentedControl:(HMSegmentedControl *)segmentedControl{
     _segmentedControl = segmentedControl;
@@ -37,13 +46,16 @@
 }
 
 
--(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC{
+-(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem{
     _parentVC = parentVC;
     _childVCs = childVCs;
+    [self layoutSubviews];
     for (UIViewController *vc in _childVCs) {
         [_parentVC addChildViewController:vc];
     }
     [self.collectionView reloadData];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:defaultItem inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }
 
 
@@ -64,11 +76,11 @@
 
 //添加容器
 -(void)addContentView{
-    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height);
-    flowLayout.minimumLineSpacing = 0;
-    flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.segmentedControl.frame), self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height) collectionViewLayout:flowLayout];
+    _flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    _flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height);
+    _flowLayout.minimumLineSpacing = 0;
+    _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.segmentedControl.frame), self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height) collectionViewLayout:_flowLayout];
     _collectionView.backgroundColor = [UIColor whiteColor];
     _collectionView.delegate = self;
     _collectionView.dataSource = self;

@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_7" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -14,26 +13,49 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wbR-GT-YaY"/>
+                        <viewControllerLayoutGuide type="bottom" id="TXh-rG-O7D"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oBt-dp-NQr" customClass="XLPageView">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <constraints>
+                            <constraint firstItem="oBt-dp-NQr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="1lY-Gb-97a"/>
+                            <constraint firstItem="oBt-dp-NQr" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="64" id="X2I-WZ-5xA"/>
+                            <constraint firstAttribute="trailing" secondItem="oBt-dp-NQr" secondAttribute="trailing" id="enm-R8-U8t"/>
+                            <constraint firstItem="TXh-rG-O7D" firstAttribute="top" secondItem="oBt-dp-NQr" secondAttribute="bottom" id="evE-Fl-TXV"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="pageView" destination="oBt-dp-NQr" id="YHS-xh-ZnX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="33.733133433283363"/>
         </scene>
         <!--First View Controller-->
         <scene sceneID="IFz-GH-GFf">
             <objects>
                 <viewController id="sK3-uk-NTZ" customClass="FirstViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0Mm-Wv-viu"/>
+                        <viewControllerLayoutGuide type="bottom" id="yGr-NM-KaE"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="llP-5G-npM">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGr-UO-gvf">
-                                <rect key="frame" x="159.5" y="290.5" width="57" height="107.5"/>
+                                <rect key="frame" x="131.5" y="230.5" width="57" height="107.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="90"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -41,10 +63,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="xGr-UO-gvf" firstAttribute="centerY" secondItem="bFQ-q0-I5I" secondAttribute="centerY" id="D6C-I7-Rgi"/>
-                            <constraint firstItem="xGr-UO-gvf" firstAttribute="centerX" secondItem="bFQ-q0-I5I" secondAttribute="centerX" id="tUx-k6-f3A"/>
+                            <constraint firstItem="xGr-UO-gvf" firstAttribute="centerY" secondItem="llP-5G-npM" secondAttribute="centerY" id="D6C-I7-Rgi"/>
+                            <constraint firstItem="xGr-UO-gvf" firstAttribute="centerX" secondItem="llP-5G-npM" secondAttribute="centerX" id="tUx-k6-f3A"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="bFQ-q0-I5I"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Oe8-DK-wgn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -55,12 +76,16 @@
         <scene sceneID="YLb-qb-p4I">
             <objects>
                 <viewController id="JWR-n7-4QY" customClass="SecondViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="79m-qp-N5E"/>
+                        <viewControllerLayoutGuide type="bottom" id="zEe-Zb-o7L"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jmI-Un-tuH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="B" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oOE-Lg-EMB">
-                                <rect key="frame" x="160.5" y="290" width="54.5" height="107.5"/>
+                                <rect key="frame" x="133" y="230.5" width="54.5" height="107.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="90"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -68,10 +93,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="oOE-Lg-EMB" firstAttribute="centerX" secondItem="PGj-kf-bZl" secondAttribute="centerX" id="Nhh-bd-S3K"/>
-                            <constraint firstItem="oOE-Lg-EMB" firstAttribute="centerY" secondItem="PGj-kf-bZl" secondAttribute="centerY" id="fXj-oK-oZo"/>
+                            <constraint firstItem="oOE-Lg-EMB" firstAttribute="centerX" secondItem="jmI-Un-tuH" secondAttribute="centerX" id="Nhh-bd-S3K"/>
+                            <constraint firstItem="oOE-Lg-EMB" firstAttribute="centerY" secondItem="jmI-Un-tuH" secondAttribute="centerY" id="fXj-oK-oZo"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="PGj-kf-bZl"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ekP-Fh-WhJ" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -12,5 +12,5 @@
 @interface XLPageView : UIView
 @property (nonatomic, strong) HMSegmentedControl *segmentedControl;
 @property (nonatomic, assign) CGRect segmentedtControlFrame;
--(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC;
+-(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem;
 @end

@@ -12,7 +12,8 @@
 #import "SecondViewController.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) XLPageView *pageView;
+@property (weak, nonatomic) IBOutlet XLPageView *pageView;
+//@property (nonatomic, strong) XLPageView *pageView;
 @end
 
 @implementation ViewController
@@ -23,9 +24,8 @@
     
 #warning 标题不同的类型使用可以请参考 HMSegmentedControl   非常感谢HMSegmentedControl作者
     HMSegmentedControl *segmentedControl = [[HMSegmentedControl alloc]init];
-    _pageView = [[XLPageView alloc]initWithFrame:CGRectMake(0, 20, 320, 500)];
-    _pageView.segmentedtControlFrame = CGRectMake(0, 0, 320, 40);
-    segmentedControl.selectedSegmentIndex = 0;
+    _pageView.segmentedtControlFrame = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    segmentedControl.selectedSegmentIndex = 2;//默认选中第二个
     segmentedControl.sectionTitles = titles;
     segmentedControl.backgroundColor = [UIColor whiteColor];
     segmentedControl.selectionIndicatorHeight = 2;
@@ -35,7 +35,7 @@
     segmentedControl.titleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor blackColor]};
     segmentedControl.selectedTitleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor redColor]};
     _pageView.segmentedControl = segmentedControl;
-    [self.view addSubview:_pageView];
+//    [self.view addSubview:_pageView];
     NSMutableArray *viewControllers = [NSMutableArray array];
     
     
@@ -53,7 +53,7 @@
         }
         [viewControllers addObject:vc];
     }
-     [self.pageView setChildVCs:viewControllers parentVC:self]; 
+     [self.pageView setChildVCs:viewControllers parentVC:self defaultItem:2];  //默认选中第二个
 }
 
 

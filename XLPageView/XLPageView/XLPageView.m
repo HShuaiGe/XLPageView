@@ -49,7 +49,6 @@
 -(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem{
     _parentVC = parentVC;
     _childVCs = childVCs;
-    [self layoutSubviews];
     for (UIViewController *vc in _childVCs) {
         [_parentVC addChildViewController:vc];
     }

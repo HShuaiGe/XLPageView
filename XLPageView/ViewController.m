@@ -54,6 +54,11 @@
         [viewControllers addObject:vc];
     }
      [self.pageView setChildVCs:viewControllers parentVC:self defaultItem:2];  //默认选中第二个
+#warning  viewControllers里面子视图加载的数据请求时最好放在下面的:
+//    -(void)viewDidAppear:(BOOL)animated{
+//        [super viewDidAppear:animated];
+//    }
+    
 }
 
 

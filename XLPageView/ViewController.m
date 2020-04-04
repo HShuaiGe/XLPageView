@@ -13,34 +13,37 @@
 
 @interface ViewController ()
 @property (weak, nonatomic) IBOutlet XLPageView *pageView;
-//@property (nonatomic, strong) XLPageView *pageView;
+@property (weak, nonatomic) IBOutlet HMSegmentedControl *segmentedControl;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    //选项卡
     NSArray *titles = @[@"一", @"二", @"三", @"四", @"五", @"六"];
-    
-#warning 标题不同的类型使用可以请参考 HMSegmentedControl   非常感谢HMSegmentedControl作者
-    HMSegmentedControl *segmentedControl = [[HMSegmentedControl alloc]init];
-    _pageView.segmentedtControlFrame = CGRectMake(0, 0, self.view.frame.size.width, 40);
-    segmentedControl.selectedSegmentIndex = 2;//默认选中第二个
-    segmentedControl.sectionTitles = titles;
-    segmentedControl.backgroundColor = [UIColor whiteColor];
-    segmentedControl.selectionIndicatorHeight = 2;
-    segmentedControl.segmentEdgeInset = UIEdgeInsetsMake(0, 10, 0, 10);
-    segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
+    self.segmentedControl.selectedSegmentIndex = 2;//默认选中第二个
+    self.segmentedControl.sectionTitles = titles;
+    self.segmentedControl.backgroundColor = [UIColor whiteColor];
+    self.segmentedControl.selectionIndicatorHeight = 2;
+    self.segmentedControl.segmentEdgeInset = UIEdgeInsetsMake(0, 10, 0, 10);
+    self.segmentedControl.selectionIndicatorLocation = HMSegmentedControlSelectionIndicatorLocationDown;
     UIFont* font = [UIFont systemFontOfSize:15];
-    segmentedControl.titleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor blackColor]};
-    segmentedControl.selectedTitleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor redColor]};
-    _pageView.segmentedControl = segmentedControl;
-//    [self.view addSubview:_pageView];
-    NSMutableArray *viewControllers = [NSMutableArray array];
+    self.segmentedControl.titleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor blackColor]};
+    self.segmentedControl.selectedTitleTextAttributes = @{NSFontAttributeName:font,NSForegroundColorAttributeName:[UIColor redColor]};
+    
+    [self.segmentedControl setIndexChangeBlock:^(NSInteger index)
+    {
+        [weakSelf.pageView xz_scrollToItemAtIndex:index];
+    }];
     
     
-    
+    //容器子View
     UIViewController *vc;
+    NSMutableArray *viewControllers = [NSMutableArray array];
     for (NSString *title in titles) { //此处可以根据后台传的类型判断加载什么VC
         if ([title isEqualToString:@"三"]) {
             vc = [[SecondViewController alloc]init];
@@ -53,11 +56,12 @@
         }
         [viewControllers addObject:vc];
     }
-     [self.pageView setChildVCs:viewControllers parentVC:self defaultItem:2];  //默认选中第二个
-#warning  viewControllers里面子视图加载的数据请求时最好放在下面的:
-//    -(void)viewDidAppear:(BOOL)animated{
-//        [super viewDidAppear:animated];
-//    }
+    
+    [self.pageView xz_setChildVCs:viewControllers parentVC:self defaultItem:2];  //默认选中第二个
+    
+    self.pageView.block = ^(NSInteger index) {
+        [weakSelf.segmentedControl setSelectedSegmentIndex:index];
+    };
     
 }
 
@@ -67,5 +71,8 @@
     // Dispose of any resources that can be recreated.
 }
 
-
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
 @end

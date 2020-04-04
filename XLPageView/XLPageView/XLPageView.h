@@ -9,8 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "HMSegmentedControl.h"
 
+typedef void(^XZSelectedBlock)(NSInteger index);
 @interface XLPageView : UIView
-@property (nonatomic, strong) HMSegmentedControl *segmentedControl;
-@property (nonatomic, assign) CGRect segmentedtControlFrame;
--(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem;
+
+@property (nonatomic, copy) XZSelectedBlock block;
+- (void)xz_setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem;
+- (void)xz_scrollToItemAtIndex:(NSInteger)index;
+- (void)xz_scrollToItemAtIndex:(NSInteger)index atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+
 @end

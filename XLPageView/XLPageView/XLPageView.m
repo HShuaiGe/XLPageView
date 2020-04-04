@@ -9,11 +9,12 @@
 #import "XLPageView.h"
 
 @interface XLPageView()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate>
-//@property (nonatomic, strong) HMSegmentedControl *segmentedControl;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) UICollectionViewFlowLayout *flowLayout;
-@property (nonatomic, strong) UIViewController *parentVC;
 @property (nonatomic, strong) NSArray<UIViewController *> *childVCs;
+@property (nonatomic, assign) NSInteger defaultItem;
+@property (nonatomic, weak) UIViewController *parentVC;
+
 @end
 
 @implementation XLPageView
@@ -27,67 +28,62 @@
 }
 
 
--(void)awakeFromNib{
+-(void)awakeFromNib
+{
     [super awakeFromNib];
-    NSLog(@"\nW:%f \nH:%f",self.frame.size.width, self.frame.size.height);
     [self addContentView];
 }
--(void)layoutSubviews{
-    self.segmentedControl.frame = CGRectMake(0, 0, self.frame.size.width, 40);
-    _flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height - 40);
-    _collectionView.frame = CGRectMake(0, 40, self.frame.size.width, self.frame.size.height - 40);
+
+-(void)layoutSubviews
+{
+    self.flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    self.collectionView.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    [self xz_scrollToItemAtIndex:self.defaultItem atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+}
+
+- (void)xz_scrollToItemAtIndex:(NSInteger)index
+{
+    [self xz_scrollToItemAtIndex:index atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
+}
+
+- (void)xz_scrollToItemAtIndex:(NSInteger)index atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:scrollPosition animated:animated];
 }
 
 
 
--(void)setSegmentedControl:(HMSegmentedControl *)segmentedControl{
-    _segmentedControl = segmentedControl;
-    [self addTitleView];
-}
-
-
--(void)setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem{
-    _parentVC = parentVC;
-    _childVCs = childVCs;
+-(void)xz_setChildVCs:(NSArray<UIViewController *> *)childVCs parentVC:(UIViewController *)parentVC defaultItem:(NSInteger)defaultItem
+{
+    self.parentVC = parentVC;
+    self.childVCs = childVCs;
+    self.defaultItem = defaultItem;
     for (UIViewController *vc in _childVCs) {
-        [_parentVC addChildViewController:vc];
+        [self.parentVC addChildViewController:vc];
     }
     [self.collectionView reloadData];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:defaultItem inSection:0];
-    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
 }
 
-
-
-
-//添加头部标题按钮
--(void)addTitleView{
-    self.segmentedControl.frame = _segmentedtControlFrame;
-    __weak typeof(self) weakSelf = self;
-    [self.segmentedControl setIndexChangeBlock:^(NSInteger index) {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-        [weakSelf.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionNone animated:NO];
-    }];
-    [self addSubview:self.segmentedControl];
-}
 
 
 
 //添加容器
 -(void)addContentView{
-    _flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height);
-    _flowLayout.minimumLineSpacing = 0;
-    _flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
-    _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(self.segmentedControl.frame), self.frame.size.width, self.frame.size.height - self.segmentedControl.frame.size.height) collectionViewLayout:_flowLayout];
-    _collectionView.backgroundColor = [UIColor whiteColor];
-    _collectionView.delegate = self;
-    _collectionView.dataSource = self;
-    _collectionView.pagingEnabled = YES;
-    _collectionView.showsVerticalScrollIndicator = NO;
-    _collectionView.showsHorizontalScrollIndicator = NO;
-    [self addSubview:_collectionView];
-    [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    self.defaultItem = 0;
+    self.flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    self.flowLayout.itemSize = CGSizeMake(self.frame.size.width, self.frame.size.height);
+    self.flowLayout.minimumLineSpacing = 0;
+    self.flowLayout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+    self.collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height) collectionViewLayout:self.flowLayout];
+    self.collectionView.backgroundColor = [UIColor whiteColor];
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    self.collectionView.pagingEnabled = YES;
+    self.collectionView.showsVerticalScrollIndicator = NO;
+    self.collectionView.showsHorizontalScrollIndicator = NO;
+    [self addSubview:self.collectionView];
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
 }
 
 
@@ -95,7 +91,7 @@
 
 #pragma mark --- UICollectionViewDataSource
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return  _childVCs.count;
+    return  self.childVCs.count;
 }
 
 
@@ -104,7 +100,7 @@
     for (UIView *subView in cell.contentView.subviews) {
         [subView removeFromSuperview];
     }
-    UIViewController *vc = _childVCs[indexPath.item];
+    UIViewController *vc = self.childVCs[indexPath.item];
     vc.view.frame = cell.contentView.frame;
     [cell.contentView addSubview:vc.view];
     return cell;
@@ -118,10 +114,15 @@
     CGFloat pageWidth = scrollView.frame.size.width;
     NSInteger page = scrollView.contentOffset.x / pageWidth;
     if (scrollView == self.collectionView) {
-        [self.segmentedControl setSelectedSegmentIndex:page animated:YES];
+        if (_block) {
+            _block(page);
+        }
     }
     
 }
-
+- (void)dealloc
+{
+    NSLog(@"%s", __func__);
+}
 
 @end
